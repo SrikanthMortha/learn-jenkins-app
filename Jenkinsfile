@@ -14,6 +14,7 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
+                    export NPM_CONFIG_CACHE=/tmp/.npm
                     npm ci
                     npm run build
                     ls -la
@@ -28,9 +29,9 @@ pipeline {
                     reuseNode true
                 }
             }
-
             steps {
                 sh '''
+                    export NPM_CONFIG_CACHE=/tmp/.npm
                     test -f build/index.html
                     npm test
                 '''
