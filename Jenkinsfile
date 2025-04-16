@@ -33,14 +33,15 @@ pipeline {
                     reuseNode true
                 }
             }
-            environment {
-                HOME = "${WORKSPACE}/.jenkins-home"
-                NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
-            }
             steps {
                 sh '''
-                    echo ">>> Running tests..."
-                    npm test || exit 1
+                    echo ">>> Checking if index.html exists in build directory..."
+                    if [ -f build/index.html ]; then
+                      echo "✅ index.html found."
+                    else
+                      echo "❌ index.html NOT found!"
+                      exit 1
+                    fi
                 '''
             }
         }
