@@ -33,15 +33,13 @@ pipeline {
                     reuseNode true
                 }
             }
+            environment {
+                NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
+            }
             steps {
                 sh '''
-                    echo ">>> Checking if index.html exists in build directory..."
-                    if [ -f build/index.html ]; then
-                      echo "✅ index.html found."
-                    else
-                      echo "❌ index.html NOT found!"
-                      exit 1
-                    fi
+                    echo ">>> Running unit tests..."
+                    npm test --cache=$NPM_CONFIG_CACHE
                 '''
             }
         }
