@@ -9,17 +9,12 @@ pipeline {
                     reuseNode true
                 }
             }
-            environment {
-                HOME = "${WORKSPACE}/.jenkins-home"
-                NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
-            }
             steps {
                 sh '''
-                    mkdir -p $HOME $NPM_CONFIG_CACHE
                     ls -la
                     node --version
                     npm --version
-                    npm ci --cache=$NPM_CONFIG_CACHE
+                    npm ci
                     npm run build
                     ls -la
                 '''
@@ -33,13 +28,11 @@ pipeline {
                     reuseNode true
                 }
             }
-            environment {
-                NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
-            }
+
             steps {
                 sh '''
-                    echo ">>> Running unit tests..."
-                    npm test --cache=$NPM_CONFIG_CACHE
+                    test -f build/index.html
+                    npm test
                 '''
             }
         }
