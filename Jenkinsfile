@@ -25,5 +25,24 @@ pipeline {
                 '''
             }
         }
+
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            environment {
+                HOME = "${WORKSPACE}/.jenkins-home"
+                NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
+            }
+            steps {
+                sh '''
+                    echo ">>> Running tests..."
+                    npm test || exit 1
+                '''
+            }
+        }
     }
 }
